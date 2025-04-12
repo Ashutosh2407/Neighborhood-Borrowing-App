@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 from rest_framework.parsers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User,Item,UserForm
-from .serializers import UserSerizalizer
+from .models import User,Item
+from .serializers import UserSerizalizer,ItemSerializer
 
 # Create your views here.
 def index(request):
@@ -47,5 +48,25 @@ def user_detail(request, pk):
         user.delete()
         return Response(status = 204)
 
-    
 
+@csrf_exempt
+@api_view(['GET','POST'])
+def item_list(request):
+    if request.method == "GET":
+        items = Item.objects.all()
+        serializer = ItemSerializer(items,many = True, context = {'request':request})
+        return Response(serializer.data, status=200)
+    
+    elif request.method == 'POST':
+        serializer = ItemSerializer(data = request.data, context = {'request':request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = 201)
+        return Response(serializer.errors, status = 400)
+    
+@csrf_exempt
+@api_view(['GET','PUT','DELETE'])
+def item_detail(request,pk):
+    item = get_object_or_404(Item, pk = pk)
+    serializer = ItemSerializer(item, context = {'request':request})
+    return Response(serializer.data)

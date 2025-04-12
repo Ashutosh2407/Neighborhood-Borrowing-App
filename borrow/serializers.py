@@ -7,9 +7,14 @@ class UserSerizalizer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ItemSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(queryset = User.objects.all())
+    borrower = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), required = False)
+    class Meta:
+        model = Item
+        fields = ['url','item_id','item_name','owner','description','borrower','date_borrowed','due_date','created_at','status']
 
-        
-        
+
    
    
 
