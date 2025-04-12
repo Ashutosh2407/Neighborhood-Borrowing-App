@@ -11,12 +11,6 @@ from .serializers import UserSerizalizer
 def index(request):
     return HttpResponse("Hello This is homepage.")
 
-def create_user(request):
-    if request.method == "GET":
-        form = UserForm()
-        return render(request,"borrow/user.html", {"form":form})
-
-
 @csrf_exempt
 @api_view(["GET","POST"])
 def user_list(request):
