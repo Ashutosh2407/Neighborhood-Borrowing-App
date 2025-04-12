@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.parsers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -37,6 +38,7 @@ def user_detail(request, pk):
     if request.method == "GET":
         serializer = UserSerizalizer(user)
         return Response(serializer.data)
+    
     elif request.method == "PUT":
         serializer = UserSerizalizer(user,data = request.data)
         if serializer.is_valid():
@@ -65,8 +67,25 @@ def item_list(request):
         return Response(serializer.errors, status = 400)
     
 @csrf_exempt
-@api_view(['GET','PUT','DELETE'])
+@api_view(['GET','PATCH','DELETE'])
 def item_detail(request,pk):
-    item = get_object_or_404(Item, pk = pk)
+    try:
+        item = get_object_or_404(Item, pk = pk)
+    except:
+        return Response(status =404)
+    
     serializer = ItemSerializer(item, context = {'request':request})
-    return Response(serializer.data)
+    
+    if request.method == "GET":
+        return Response(serializer.data)
+    
+    elif request.method == "PATCH":
+        serializer = ItemSerializer(item, data = request.data,partial = True, context = {'request':request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = 200)
+        return Response(serializer.errors, status = 404)
+    
+    elif request.method == "DELETE":
+        item.delete()
+        return Response(status = 200)
