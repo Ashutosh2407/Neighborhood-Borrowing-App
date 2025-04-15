@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.parsers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User,Item
-from .serializers import UserSerizalizer,ItemSerializer
+from .models import User,Item, Group
+from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
 
 # Create your views here.
 def index(request):
@@ -89,3 +89,26 @@ def item_detail(request,pk):
     elif request.method == "DELETE":
         item.delete()
         return Response(status = 200)
+
+
+@api_view(['GET','POST'])
+@csrf_exempt
+def group_list(request):
+    if request.method == "GET":
+        group = Group.objects.all()
+        serializer = GroupSerializer(group, many =True, context = {'request':request})
+        return Response(serializer.data)
+    
+
+@api_view(['GET','PATCH','DELETE'])
+@csrf_exempt
+def group_detail(request, pk):
+    try:
+        group = Group.objects.get(pk = pk)
+    except:
+        return Response(status =404)
+    
+    if request.method =="GET":
+        serializer = GroupSerializer(group, context = {'request':request})
+        return Response(serializer.data)
+
