@@ -98,6 +98,12 @@ def group_list(request):
         group = Group.objects.all()
         serializer = GroupSerializer(group, many =True, context = {'request':request})
         return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = GroupSerializer(data= request.data,context = {'request':request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        return Response(serializer.errors, status =404)
     
 
 @api_view(['GET','PATCH','DELETE'])
