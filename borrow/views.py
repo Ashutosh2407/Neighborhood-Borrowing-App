@@ -16,6 +16,7 @@ def index(request):
 @csrf_exempt
 @api_view(["GET","POST"])
 def user_list(request):
+
     if request.method == "GET":
         user = User.objects.all()
         serializer = UserSerizalizer(user, many=True)
@@ -30,6 +31,7 @@ def user_list(request):
 
 @api_view(["GET","PUT","DELETE"])
 def user_detail(request, pk):
+
     try:
         user = User.objects.get(pk = pk)
     except User.DoesNotExist:
@@ -54,6 +56,7 @@ def user_detail(request, pk):
 @csrf_exempt
 @api_view(['GET','POST'])
 def item_list(request):
+
     if request.method == "GET":
         items = Item.objects.all()
         serializer = ItemSerializer(items,many = True, context = {'request':request})
@@ -66,9 +69,11 @@ def item_list(request):
             return Response(serializer.data, status = 201)
         return Response(serializer.errors, status = 400)
     
+
 @csrf_exempt
 @api_view(['GET','PATCH','DELETE'])
 def item_detail(request,pk):
+
     try:
         item = get_object_or_404(Item, pk = pk)
     except:
@@ -94,12 +99,14 @@ def item_detail(request,pk):
 @api_view(['GET','POST'])
 @csrf_exempt
 def group_list(request):
+
     if request.method == "GET":
         group = Group.objects.all()
         serializer = GroupSerializer(group, many =True, context = {'request':request})
         return Response(serializer.data)
+    
     elif request.method == "POST":
-        serializer = GroupSerializer(data= request.data,context = {'request':request})
+        serializer = GroupSerializer(data=request.data,context = {'request':request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=200)
@@ -109,6 +116,7 @@ def group_list(request):
 @api_view(['GET','PATCH','DELETE'])
 @csrf_exempt
 def group_detail(request, pk):
+
     try:
         group = Group.objects.get(pk = pk)
     except:
@@ -117,4 +125,15 @@ def group_detail(request, pk):
     if request.method =="GET":
         serializer = GroupSerializer(group, context = {'request':request})
         return Response(serializer.data)
+    
+    elif request.method == "PATCH":
+        serializer = GroupSerializer(group, data = request.data, partial = True, context = {'request':request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = 200)
+        return Response(serializer.errors, status=404)
+    
+    elif request.method == "DELETE":
+        group.delete()
+        return Response(status=200)
 
