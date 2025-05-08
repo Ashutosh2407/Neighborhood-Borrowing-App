@@ -4,8 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
 
@@ -15,6 +16,7 @@ def index(request):
 
 @csrf_exempt
 @api_view(["GET","POST"])
+@permission_classes([IsAuthenticated])
 def user_list(request):
 
     if request.method == "GET":
@@ -30,6 +32,7 @@ def user_list(request):
         return Response(serializer.errors, status = 400)
 
 @api_view(["GET","PUT","DELETE"])
+@permission_classes([IsAuthenticated])
 def user_detail(request, pk):
 
     try:
@@ -55,6 +58,7 @@ def user_detail(request, pk):
 
 @csrf_exempt
 @api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
 def item_list(request):
 
     if request.method == "GET":
@@ -72,6 +76,7 @@ def item_list(request):
 
 @csrf_exempt
 @api_view(['GET','PATCH','DELETE'])
+@permission_classes([IsAuthenticated])
 def item_detail(request,pk):
 
     try:
@@ -98,6 +103,7 @@ def item_detail(request,pk):
 
 @api_view(['GET','POST'])
 @csrf_exempt
+@permission_classes([IsAuthenticated])
 def group_list(request):
 
     if request.method == "GET":
@@ -115,6 +121,7 @@ def group_list(request):
 
 @api_view(['GET','PATCH','DELETE'])
 @csrf_exempt
+@permission_classes([IsAuthenticated])
 def group_detail(request, pk):
 
     try:
