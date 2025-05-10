@@ -5,11 +5,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import *
 from rest_framework.decorators import api_view,permission_classes
+from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
-
+from django.utils.timezone import now
+from datetime import timedelta
 # Create your views here.
 def index(request):
     return HttpResponse("Hello This is homepage.")
@@ -99,6 +101,25 @@ def item_detail(request,pk):
     elif request.method == "DELETE":
         item.delete()
         return Response(status = 200)
+
+@api_view(['POST'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def item_borrow(request,pk):
+    try:
+        item = get_object_or_404(Item, pk = pk)
+    except:
+        return Response(status=404)
+    
+    if request.method == "POST":
+        if item.status == "Av":
+            item.borrower = request.user
+            item.status = "Br"
+            item.date_borrowed = now()
+            item.due_date = now()+timedelta(days=14)
+            item.save()
+            return Response({"message":"Borrowed successfully."})
+        return Response({"message":"Item Not Available."})
 
 
 @api_view(['GET','POST'])
