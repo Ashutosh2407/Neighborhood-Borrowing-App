@@ -121,6 +121,28 @@ def item_borrow(request,pk):
             return Response({"message":"Borrowed successfully."})
         return Response({"message":"Item Not Available."})
 
+@api_view(['POST'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def item_return(request,pk):
+    try:
+        item = get_object_or_404(Item,pk=pk)
+    except:
+        return Response(status=404)
+
+    if request.method == "POST":
+        if item.status == "Br":
+            item.borrower = None
+            item.status = "Av"
+            item.date_borrowed = None
+            item.due_date = None
+            item.save()
+            return Response("Item returned successfully.")
+        return Response("Item not available.")
+
+
+
+
 
 @api_view(['GET','POST'])
 @csrf_exempt
