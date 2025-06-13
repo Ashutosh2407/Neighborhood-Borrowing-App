@@ -1,6 +1,15 @@
+import Form from "../components/Form"
+
+
+
 function Register(){
     
-    return <div>You are at the Register Page.</div>
+    return (
+        <div >
+         <Form method = "Register"/>
+        </div>
+    )
+
 }
 
 export default Register

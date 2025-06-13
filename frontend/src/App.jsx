@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import Register from './pages/Register'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import './index.css'
 
 function Logout(){
   localStorage.clear()
@@ -20,6 +21,7 @@ function App() {
   
 
   return (
+    
       <BrowserRouter>
         <Routes>
           <Route 
