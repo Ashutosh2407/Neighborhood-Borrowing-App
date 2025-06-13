@@ -27,7 +27,8 @@ function ProtectedRoutes({children}){
 
         }
         catch(error){
-
+            console.log("Error refreshing token:", error)
+            setisAuthorized(false) 
         }
     }
 
