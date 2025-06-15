@@ -7,18 +7,28 @@ from rest_framework.parsers import *
 from rest_framework.decorators import api_view,permission_classes
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
+from rest_framework.generics import CreateAPIView
 from django.utils.timezone import now
 from datetime import timedelta
 # Create your views here.
 def index(request):
     return HttpResponse("Hello This is homepage.")
 
+class CreateUserView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerizalizer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+
+
+
 @csrf_exempt
+@permission_classes([IsAdminUser])
 @api_view(["GET","POST"])
-@permission_classes([IsAuthenticated])
 def user_list(request):
 
     if request.method == "GET":

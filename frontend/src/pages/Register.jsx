@@ -6,7 +6,7 @@ function Register(){
     
     return (
         <div >
-         <Form method = "Register"/>
+         <Form method = "register" route = "user/register/" />
         </div>
     )
 
