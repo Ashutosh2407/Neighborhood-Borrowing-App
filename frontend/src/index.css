@@ -10,6 +10,6 @@
 /* Remove the body flex styles completely */
 html, body, #root {
   height: 100%;
-  margin: 0;
-  padding: 0;
+  /* margin: 0;
+  padding: 0; */
 }

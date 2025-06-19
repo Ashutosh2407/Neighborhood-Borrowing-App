@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from django.utils.timezone import now
 from datetime import timedelta
 # Create your views here.
@@ -29,6 +29,11 @@ class CreateUserView(CreateAPIView):
         user.set_password(password)
         user.save()
 
+class ListCreateItemView(ListCreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated]
+    
         
 
 

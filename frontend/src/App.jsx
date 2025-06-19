@@ -6,6 +6,7 @@ import NotFound from './pages/NotFound'
 import Register from './pages/Register'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Item from './components/Item'
+import CreateItem from './pages/CreateItem'
 import './index.css'
 
 function Logout(){
@@ -37,6 +38,7 @@ function App() {
           <Route path = "/logout" element = {<Logout/>} />
           <Route path = "/register" element = {<RegisterandLogout/>} />
           <Route path = "/item" element = {<Item/>} />
+          <Route path = "/item/create" element = {<CreateItem/>} />
           <Route path = "*" element = {<NotFound/>} />
         </Routes>
       </BrowserRouter>
