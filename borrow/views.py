@@ -2,17 +2,19 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 from rest_framework import status
 from rest_framework.parsers import *
 from rest_framework.decorators import api_view,permission_classes
-from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
-from django.utils.timezone import now
 from datetime import timedelta
+
+
 # Create your views here.
 def index(request):
     return HttpResponse("Hello This is homepage.")
@@ -91,7 +93,7 @@ def item_list(request):
         serializer = ItemSerializer(items,many = True, context = {'request':request})
         return Response(serializer.data, status=200)
     
-    elif request.method == 'POST':
+    elif request.method == "POST":
         serializer = ItemSerializer(data = request.data, context = {'request':request})
         if serializer.is_valid():
             serializer.save()
@@ -107,7 +109,7 @@ def item_detail(request,pk):
     try:
         item = get_object_or_404(Item, pk = pk)
     except:
-        return Response(status =404)
+        return Response(status = 404)
     
     serializer = ItemSerializer(item, context = {'request':request})
     

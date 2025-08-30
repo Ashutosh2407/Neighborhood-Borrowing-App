@@ -5,11 +5,11 @@ from django.utils import timezone
 
 class Item(models.Model):
     Statuses = {
-        "Av":"Available", 
-        "Re":"Requested", 
-        "Br":"Borrowed", 
-        "Ov":"Overdue", 
-        "R":"Returned"
+        "Available":"Available", 
+        "Requested":"Requested", 
+        "Borrowed":"Borrowed", 
+        "Overdue":"Overdue", 
+        "Returned":"Returned"
     }
     item_id = models.BigAutoField(primary_key=True)
     item_name = models.CharField(max_length=50, default=None)
