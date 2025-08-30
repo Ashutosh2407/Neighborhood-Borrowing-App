@@ -13,6 +13,8 @@ from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from .models import User,Item, Group
 from .serializers import UserSerizalizer,ItemSerializer, GroupSerializer
 from datetime import timedelta
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 
 # Create your views here.
@@ -37,26 +39,35 @@ class ListCreateItemView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     
         
+class ListCreateUserView(ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerizalizer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAdminUser]
 
 
 
+# @csrf_exempt
+# @permission_classes([IsAdminUser])
+# @api_view(["GET","POST"])
+# def user_list(request):
 
-@csrf_exempt
-@permission_classes([IsAdminUser])
-@api_view(["GET","POST"])
-def user_list(request):
-
-    if request.method == "GET":
-        user = User.objects.all()
-        serializer = UserSerizalizer(user, many=True)
-        return Response(serializer.data)
+#     if request.method == "GET":
+#         user = User.objects.all()
+#         serializer = UserSerizalizer(user, many=True)
+#         return Response(serializer.data)
     
-    elif request.method == "POST":
-        serializer = UserSerizalizer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = 201)
-        return Response(serializer.errors, status = 400)
+#     elif request.method == "POST":
+#         serializer = UserSerizalizer(data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status = 201)
+#         return Response(serializer.errors, status = 400)
+
+
+
+
+
 
 @api_view(["GET","PUT","DELETE"])
 @permission_classes([IsAuthenticated])

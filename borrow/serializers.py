@@ -7,6 +7,9 @@ class UserSerizalizer(serializers.ModelSerializer):
         fields = ["username","password"]
         extra_kwargs = {"password":{"write_only":True}}
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset = User.objects.all())
