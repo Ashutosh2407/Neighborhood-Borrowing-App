@@ -13,6 +13,6 @@ class UserTestCase(TestCase):
         self.assertTrue(self.user.check_password("abc123"))
 
     def test_instance_tostring(self):
-        self.assertAlmostEqual(str(self.user), "User1")
+        self.assertEqual(str(self.user), "User1")
 
     
