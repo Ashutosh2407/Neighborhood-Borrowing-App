@@ -73,3 +73,4 @@ sqlparse>=0.4.4
 absl-py>=2.0.0
 brotlipy>=0.7.0
 charset-normalizer>=3.3.0
+python-dotenv
