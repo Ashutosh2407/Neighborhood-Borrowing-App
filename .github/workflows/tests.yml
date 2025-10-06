@@ -29,3 +29,5 @@ jobs:
         python manage.py test
       env:
         DJANGO_SETTINGS_MODULE: mysite.settings  # Change to your settings module
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DEBUG: 'True'
