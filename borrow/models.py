@@ -19,7 +19,7 @@ class Item(models.Model):
     date_borrowed = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank =True)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(choices=Statuses, default="Available")
+    status = models.CharField(max_length=20, choices=Statuses, default="Available")
 
     def __str__(self):
         return self.item_name
@@ -31,13 +31,13 @@ class Group(models.Model):
         "D":"Dead"
     }
     group_id = models.BigAutoField(primary_key=True)
-    group_name = models.CharField(max_length=50, default=None, blank = False)
-    description = models.CharField(max_length=200, default=None)
-    city = models.CharField(max_length=20,default=None)
+    group_name = models.CharField(max_length=50, null= True, default=None, blank = False)
+    description = models.CharField(max_length=200, null= True, default=None)
+    city = models.CharField(max_length=20,null= True,default=None)
     admin = models.ForeignKey(User, related_name="admin",null=True, on_delete=models.SET_NULL)
     members = models.ManyToManyField(User)
-    time_created = models.DateTimeField(default = timezone.now())
-    status = models.CharField(choices = status, default = "A")
+    time_created = models.DateTimeField(default = timezone.now)
+    status = models.CharField(choices = status, max_length=3, default = "A")
 
     def __str__(self):
         return f'{self.group_name} is in {self.status} state.'
