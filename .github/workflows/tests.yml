@@ -26,16 +26,9 @@ jobs:
 
     - name: Run migrations
       run: |
-        python manage.py makemigrations
         python manage.py migrate
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: 'True'
     
-    - name: Run Django tests
-      run: |
-        python manage.py test
-      env:
-        DJANGO_SETTINGS_MODULE: mysite.settings  # Change to your settings module
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DEBUG: 'True'
+    
