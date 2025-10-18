@@ -14,8 +14,9 @@ import {
 } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-//import Item from '../components/Item'
-
+import Item from '../components/Item'
+import api from '../api'
+import { data } from 'react-router-dom'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -28,46 +29,9 @@ const subCategories = [
   { name: 'Available', href: '#' },
   { name: 'Borrowed', href: '#' },
   { name: 'To be Returned', href: '#' },
-//   { name: 'Hip Bags', href: '#' },
-//   { name: 'Laptop Sleeves', href: '#' },
+
 ]
-const filters = [
-//   {
-//     id: 'color',
-//     name: 'Color',
-//     options: [
-//       { value: 'white', label: 'White', checked: false },
-//       { value: 'beige', label: 'Beige', checked: false },
-//       { value: 'blue', label: 'Blue', checked: true },
-//       { value: 'brown', label: 'Brown', checked: false },
-//       { value: 'green', label: 'Green', checked: false },
-//       { value: 'purple', label: 'Purple', checked: false },
-//     ],
-//   },
-//   {
-//     id: 'category',
-//     name: 'Category',
-//     options: [
-//       { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-//       { value: 'sale', label: 'Sale', checked: false },
-//       { value: 'travel', label: 'Travel', checked: true },
-//       { value: 'organization', label: 'Organization', checked: false },
-//       { value: 'accessories', label: 'Accessories', checked: false },
-//     ],
-//   },
-//   {
-//     id: 'size',
-//     name: 'Size',
-//     options: [
-//       { value: '2l', label: '2L', checked: false },
-//       { value: '6l', label: '6L', checked: false },
-//       { value: '12l', label: '12L', checked: false },
-//       { value: '18l', label: '18L', checked: false },
-//       { value: '20l', label: '20L', checked: false },
-//       { value: '40l', label: '40L', checked: true },
-//     ],
-//   },
-]
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -76,21 +40,17 @@ function classNames(...classes) {
 function Itemfilter() {
   
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-    cosnt [items, setItems] = useState([])
+    const [items, setItems] = useState([])
     const [isLoading, setisLoading] = useState(true)
     const [error, setError] = useState(null)
 
     useEffect(() => {
         const fetchItems = async() => {
             try {
-                const res = await fetch("items/");
-
-                if (! res.ok){
-                    
-                    throw new Error("Failed to fetch new items.")
-                }
-
-                const data = await res.json()
+                console.log('Fetching items...');
+                const res = await api.get("items/");
+                console.log('Response:', res.data );
+                const data = res.data
                 setItems(data);
                 setisLoading(false);
             } catch (err){
@@ -337,7 +297,9 @@ function Itemfilter() {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-                {items.map((item)=> <Item key={item.id} item={item}/>)}
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((item) => <Item key={item.item_id} item={item}/>)}
+                </div>
               </div>
             </div>
           </section>
