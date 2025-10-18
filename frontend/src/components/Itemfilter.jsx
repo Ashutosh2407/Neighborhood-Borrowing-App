@@ -1,6 +1,5 @@
 'use client'
-
-import { useState } from 'react'
+import { Component, useState, useEffect } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -15,6 +14,8 @@ import {
 } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+//import Item from '../components/Item'
+
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -73,7 +74,36 @@ function classNames(...classes) {
 }
 
 function Itemfilter() {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    cosnt [items, setItems] = useState([])
+    const [isLoading, setisLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchItems = async() => {
+            try {
+                const res = await fetch("items/");
+
+                if (! res.ok){
+                    
+                    throw new Error("Failed to fetch new items.")
+                }
+
+                const data = await res.json()
+                setItems(data);
+                setisLoading(false);
+            } catch (err){
+                setError(err.message)
+                setisLoading(false)
+
+            }
+        };
+
+        fetchItems();
+    }, []);
+
+
 
   return (
     <div className="bg-white">
@@ -104,7 +134,7 @@ function Itemfilter() {
               </div>
 
               {/* Filters */}
-              <form className="mt-4 border-t border-gray-200">
+              {/* <form className="mt-4 border-t border-gray-200">
                 <h3 className="sr-only">Categories</h3>
                 <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                   {subCategories.map((category) => (
@@ -174,7 +204,7 @@ function Itemfilter() {
                     </DisclosurePanel>
                   </Disclosure>
                 ))}
-              </form>
+              </form> */}
             </DialogPanel>
           </div>
         </Dialog>
@@ -185,15 +215,15 @@ function Itemfilter() {
 
             <div className="flex items-center">
               <Menu as="div" className="relative inline-block text-left">
-                <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                {/* <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                   Sort
                   <ChevronDownIcon
                     aria-hidden="true"
                     className="-mr-1 ml-1 size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
                   />
-                </MenuButton>
+                </MenuButton> */}
 
-                <MenuItems
+                {/* <MenuItems
                   transition
                   className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                 >
@@ -212,10 +242,10 @@ function Itemfilter() {
                       </MenuItem>
                     ))}
                   </div>
-                </MenuItems>
+                </MenuItems> */}
               </Menu>
 
-              <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+              {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon aria-hidden="true" className="size-5" />
               </button>
@@ -226,7 +256,7 @@ function Itemfilter() {
               >
                 <span className="sr-only">Filters</span>
                 <FunnelIcon aria-hidden="true" className="size-5" />
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -247,7 +277,7 @@ function Itemfilter() {
                   ))}
                 </ul>
 
-                {filters.map((section) => (
+                {/* {filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
                     <h3 className="-my-3 flow-root">
                       <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
@@ -302,11 +332,13 @@ function Itemfilter() {
                       </div>
                     </DisclosurePanel>
                   </Disclosure>
-                ))}
+                ))} */}
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">**My List of Items</div>
+              <div className="lg:col-span-3">
+                {items.map((item)=> <Item key={item.id} item={item}/>)}
+              </div>
             </div>
           </section>
         </main>

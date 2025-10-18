@@ -37,6 +37,9 @@ class ListCreateItemView(ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner = self.request.user)
     
         
 class ListCreateUserView(ListCreateAPIView):
