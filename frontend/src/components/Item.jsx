@@ -5,10 +5,10 @@ function Item({item}) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> */}
           <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
             <div class="relative">
-              <img src="item.jpg" alt="Item" class="w-full h-40 object-cover rounded-xl" />
+              <img src="item.jpg" alt={item.item_name} class="w-full h-40 object-cover rounded-xl" />
               <div class="absolute top-3 right-3">
                 <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                  Available
+                  {item.status}
                 </span>
               </div>
             </div>
@@ -20,7 +20,7 @@ function Item({item}) {
                   <p>Owner: {item.owner}</p>
                   <p>Max: 3 days</p>
                 </div>
-                <button class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-blue-600 hover:to-purple-700 transition-all">
+                <button style = {{backgroundColor: '#F06E35'}} class="bg-gradient-to-r text-white px-6 py-2 rounded-full hover:from-[#F2614B] hover:to-[#F0B885] transition-all">
                   Request
                 </button>
               </div>
