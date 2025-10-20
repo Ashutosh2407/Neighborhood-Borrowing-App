@@ -1,3 +1,4 @@
+import Button from "./Button"
 function Item({item}) {
   return (
     <div>
@@ -20,19 +21,12 @@ function Item({item}) {
                   <p>Owner: {item.owner}</p>
                   <p>Max: 3 days</p>
                 </div>
-                <button style = {{backgroundColor: '#F06E35'}} class="bg-gradient-to-r text-white px-6 py-2 rounded-full hover:from-[#F2614B] hover:to-[#F0B885] transition-all">
-                  Request
-                </button>
+                <Button status = {item.status}></Button>
+                
               </div>
             </div>
           </div>
         </div>
-
-
-    //   </div>
-
-    // </div>
-
   )
 }
 

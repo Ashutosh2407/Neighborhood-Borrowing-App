@@ -66,7 +66,7 @@ function Itemfilter() {
 
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#FDF6EE]">
       <div>
         {/* Mobile filter dialog */}
         <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">
