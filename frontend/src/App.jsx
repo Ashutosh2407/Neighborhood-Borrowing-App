@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import Register from './pages/Register'
+import MyItems from './pages/MyItems'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Item from './components/Item'
 import CreateItem from './pages/CreateItem'
@@ -37,7 +38,7 @@ function App() {
           <Route path = "/login" element = {<Login/>} />
           <Route path = "/logout" element = {<Logout/>} />
           <Route path = "/register" element = {<RegisterandLogout/>} />
-          <Route path = "/item" element = {<Item/>} />
+          <Route path = "/myitems" element = {<MyItems/>} />
           <Route path = "/item/create" element = {<CreateItem/>} />
           <Route path = "*" element = {<NotFound/>} />
         </Routes>
